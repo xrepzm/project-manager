@@ -1,0 +1,10 @@
+{
+  "name": "project-manager",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "change-case": "^3.0.0",
+    "shelljs": "^0.7.5",
+    "ws": "^1.1.1"
+  }
+}

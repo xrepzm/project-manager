@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project manager</title>
+</head>
+<body>
+  <div class="container">
+    <label for="project_name">Projectname:</label>
+    <input type="text" id="project_name" autocomplete="off" value="Test project">
+    <button id="create">Create</button>
+  </div>
+
+  <code id="log" style="font-size: 10px; display: block; width: 960px; height: 500px; overflow-y: scroll; border: 1px solid gray"></code>
+
+  <script>
+  const ws = new WebSocket(`ws://${window.location.host}:8080`)
+
+  ws.onmessage = message => {
+    $log = document.getElementById('log')
+    $log.innerHTML += message.data.replace(new RegExp('\\n', 'g'), '<br>').replace(new RegExp('\\x1b\\[\\d+m', 'g'), '')
+    $log.scrollTop = $log.scrollHeight
+  }
+
+  document.getElementById('create').addEventListener('click', event => {
+    $projectname = document.getElementById('project_name')
+
+    if (projectname = $projectname.value.trim()) {
+      ws.send(JSON.stringify({ projectname }))
+      $projectname.value = ''
+    }
+  }, false)
+  </script>
+</body>
+</html>
