@@ -3,6 +3,8 @@ require('shelljs/global')
 const WebSocketServer = require('ws').Server
 const wss = new WebSocketServer({ port: 8080 })
 
+// https://mostafa-samir.github.io/async-recursive-patterns-pt2/
+
 wss.on('connection', ws => {
   ws.on('message', message => createProject(JSON.parse(message).projectname))
 
@@ -13,7 +15,7 @@ wss.on('connection', ws => {
     const pascal = require('change-case').pascalCase(projectName)
     const dbname = require('change-case').snakeCase(projectName)
     const dbuser = dbname
-    const dbpass = 'DBpasS'
+    const dbpass = 'DBpasS2017&'
 
     if (/^win/.test(process.platform)) {
       require('dns').resolve('google.com', error => {
