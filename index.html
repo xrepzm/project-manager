@@ -28,32 +28,32 @@
     const ws = new WebSocket(`ws://${window.location.host}:8080`)
 
     ws.onmessage = message => {
-      if (message.data == ':connected:') {
-          document.getElementById('create').disabled = false
+      if (message.data == ":connected:") {
+          document.getElementById("create").disabled = false
           return
       }
 
-      $log = document.getElementById('log')
+      $log = document.getElementById("log")
 
-      if (message.data == 'Reload laragon...\n') {
-        window.open('http://test-project.dev', '_blank')
+      if (message.data == "Reload laragon...\n") {
+        window.open("http://test-project.dev", "_blank")
       }
 
       $log.innerHTML += message.data
-          .replace(/\n/g, '<br>')
-          .replace(/\x1b\[\d+m/g, '')
+          .replace(/\n/g, "<br>")
+          .replace(/\x1b\[\d+m/g, "")
       $log.scrollTop = $log.scrollHeight
     }
 
-    document.getElementById('create')
-      .addEventListener('click', event => {
-          document.getElementById('create').disabled = true
+    document.getElementById("create")
+      .addEventListener("click", event => {
+          document.getElementById("create").disabled = true
 
-          $projectname = document.getElementById('project_name')
+          $projectname = document.getElementById("project_name")
 
           if (projectname = $projectname.value.trim()) {
             ws.send(JSON.stringify({ projectname }))
-            $projectname.value = ''
+            $projectname.value = ""
           }
         }, false)
   </script>
