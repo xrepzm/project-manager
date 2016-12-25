@@ -4,9 +4,7 @@ const WebSocketServer = require('ws').Server
 const wss = new WebSocketServer({ port: 8080 })
 
 wss.on('connection', ws => {
-  ws.on('message', message => {
-    createProject(JSON.parse(message).projectname)
-  })
+  ws.on('message', message => createProject(JSON.parse(message).projectname))
 
   createProject = projectName => {
     const rootuser = 'root'
@@ -87,10 +85,10 @@ wss.on('connection', ws => {
                                   exec(`mysql -u${rootuser} -e "FLUSH PRIVILEGES;"`)
                                 }
 
-                                echo('Commiting repositiory...')
+                                ws.send('Commiting repositiory...\n')
                                 exec('git add .')
                                 exec('git commit -m "Laravel installed"')
-                                echo('Done!')
+                                ws.send('Done!\n')
 
                                 if (which('subl')) {
                                   exec('subl .')
@@ -98,9 +96,7 @@ wss.on('connection', ws => {
 
                                 ws.send('\nReload laragon...\n')
 
-                                setTimeout(() => {
-                                  exec('..\\..\\laragon reload nginx')
-                                }, 5000)
+                                setTimeout(() => exec('..\\..\\laragon reload'), 5000)
                               }
                             })
                           }
@@ -112,14 +108,6 @@ wss.on('connection', ws => {
               }
             }
           })
-
-          /*
-
-          ws.send(echo('Create database and its user...\n').stdout)
-
-          /**/
-
-          // cd('www/project_manager/')
         }
       })
     }
