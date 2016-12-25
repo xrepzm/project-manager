@@ -6,6 +6,8 @@ const wss = new WebSocketServer({ port: 8080 })
 // https://mostafa-samir.github.io/async-recursive-patterns-pt2/
 
 wss.on('connection', ws => {
+  ws.send(':connected:')
+
   ws.on('message', message => createProject(JSON.parse(message).projectname))
 
   createProject = projectName => {
@@ -87,7 +89,7 @@ wss.on('connection', ws => {
                                   exec(`mysql -u${rootuser} -e "FLUSH PRIVILEGES;"`)
                                 }
 
-                                ws.send('Commiting repositiory...\n')
+                                ws.send('\nCommiting repositiory...\n')
                                 exec('git add .')
                                 exec('git commit -m "Laravel installed"')
                                 ws.send('Done!\n')
