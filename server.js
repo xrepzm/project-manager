@@ -98,7 +98,7 @@ wss.on('connection', ws => {
                                   exec('subl .')
                                 }
 
-                                ws.send('\nReload laragon...\n')
+                                ws.send('Reload laragon...\n')
 
                                 setTimeout(() => exec('..\\..\\laragon reload'), 5000)
                               }
