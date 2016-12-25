@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Project manager</title>
   <style type="text/css">
+    .container {
+      /* ... */ }
       #log {
         width: 960px;
         height: 500px;
@@ -23,36 +25,37 @@
   <code id="log"></code>
 
   <script>
-  const ws = new WebSocket(`ws://${window.location.host}:8080`)
+    const ws = new WebSocket(`ws://${window.location.host}:8080`)
 
-  ws.onmessage = message => {
+    ws.onmessage = message => {
+      if (message.data == ':connected:') {
+          document.getElementById('create').disabled = false
+          return
+      }
 
-    if (message.data == ':connected:') {
-        document.getElementById('create').disabled = false
-        return
+      $log = document.getElementById('log')
+
+      if (message.data == '\nReload laragon...\n') {
+        window.open('test-project.dev', '_blank')
+      }
+
+      $log.innerHTML += message.data
+          .replace(new RegExp('\\n', 'g'), '<br>')
+          .replace(new RegExp('\\x1b\\[\\d+m', 'g'), '')
+      $log.scrollTop = $log.scrollHeight
     }
 
-    $log = document.getElementById('log')
+    document.getElementById('create')
+      .addEventListener('click', event => {
+          document.getElementById('create').disabled = true
 
-    if (message.data == '\nReload laragon...\n') {
-      window.open('test-project.dev', '_blank')
-      return
-    }
+          $projectname = document.getElementById('project_name')
 
-    $log.innerHTML += message.data.replace(new RegExp('\\n', 'g'), '<br>').replace(new RegExp('\\x1b\\[\\d+m', 'g'), '')
-    $log.scrollTop = $log.scrollHeight
-  }
-
-  document.getElementById('create').addEventListener('click', event => {
-    document.getElementById('create').disabled = true
-
-    $projectname = document.getElementById('project_name')
-
-    if (projectname = $projectname.value.trim()) {
-      ws.send(JSON.stringify({ projectname }))
-      $projectname.value = ''
-    }
-  }, false)
+          if (projectname = $projectname.value.trim()) {
+            ws.send(JSON.stringify({ projectname }))
+            $projectname.value = ''
+          }
+        }, false)
   </script>
 </body>
 </html>
